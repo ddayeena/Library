@@ -85,6 +85,10 @@ void CreateTables(sql::Connection* con) {
         sql::ResultSet* res = stmt->executeQuery("SELECT COUNT(*) AS count FROM user;");
         if (res->next() && res->getInt("count") == 0) {
             stmt->execute("INSERT INTO user (login, password, role) VALUES ('admin', 'admin', 'Administrator');");
+
+            stmt = con->createStatement();
+            stmt->execute("INSERT INTO worker (name, surname, phoneNumber, position, address, salary, role) VALUES "
+                "('Admin', 'Admin', '0000000000', 'Administrator', 'No Street', 0, 1);");
         }
         delete res;
         delete stmt;
