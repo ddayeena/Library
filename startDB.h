@@ -81,6 +81,13 @@ void CreateTables(sql::Connection* con) {
                       "password VARCHAR(10) NOT NULL,"
                       "role ENUM('Administrator', 'Librarian', 'Organizer'), "
                       "PRIMARY KEY(user_id));");
+        
+        sql::ResultSet* res = stmt->executeQuery("SELECT COUNT(*) AS count FROM user;");
+        if (res->next() && res->getInt("count") == 0) {
+            stmt->execute("INSERT INTO user (login, password, role) VALUES ('admin', 'admin', 'Administrator');");
+        }
+        delete res;
+        delete stmt;
 }
 void ConnectDB(sql::Connection** con, sql::Driver** driver) {
     *driver = get_driver_instance();
